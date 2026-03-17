@@ -53,10 +53,38 @@ jobs:
           REPO_URL: https://github.com/VMKer/DevOps_TestApplication
           APP_ENV_FILE: ${{ secrets.APP_ENV_FILE }}
         run: |
+          PARAMS=$(python3 - <<'PY'
+          import json, os, shlex
+
+          repo_dir = "/home/ec2-user/test-app"
+          branch = os.environ["BRANCH_NAME"]
+          repo_url = os.environ["REPO_URL"]
+          env_file = os.environ["APP_ENV_FILE"]
+
+          d = shlex.quote(repo_dir)
+          b = shlex.quote(branch)
+          r = shlex.quote(repo_url)
+
+          commands = [
+              "set -Eeuo pipefail",
+              f"mkdir -p {d}",
+              f"if [ ! -d {d}/.git ]; then git clone --branch {b} {r} {d}; fi",
+              f"cd {d}",
+              f"git fetch origin {b}",
+              f"git checkout -B {b} origin/{b}",
+              "cat > .env <<'EOF'\n" + env_file + "\nEOF",
+              "chmod 600 .env",
+              f"bash {d}/deploy-test-app.sh {b}",
+          ]
+
+          print(json.dumps({"commands": commands}))
+          PY
+          )
+
           COMMAND_ID=$(aws ssm send-command \
             --instance-ids "$INSTANCE_ID" \
             --document-name "AWS-RunShellScript" \
-            --parameters commands='["sudo -iu ec2-user bash /home/ec2-user/test-app/deploy-test-app.sh"]' \
+            --parameters "$PARAMS" \
             --query "Command.CommandId" \
             --output text)
 
