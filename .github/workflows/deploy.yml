@@ -74,7 +74,7 @@ jobs:
               f"git checkout -B {b} origin/{b}",
               "cat > .env <<'EOF'\n" + env_file + "\nEOF",
               "chmod 600 .env",
-              f"bash {d}/deploy-test-app.sh {b}",
+              f"sudo -iu ec2-user bash -lc 'cd {d} && bash deploy-test-app.sh {b}'",
           ]
 
           print(json.dumps({"commands": commands}))
