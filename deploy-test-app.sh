@@ -12,7 +12,7 @@ if [ ! -f ".env" ]; then
 fi
 
 sudo chmod 600 .env
-#sudo chmod +r .env
+sudo chmod +r .env
 
 if docker compose version >/dev/null 2>&1; then
   COMPOSE="docker compose"
