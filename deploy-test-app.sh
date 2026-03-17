@@ -14,22 +14,7 @@ fi
 sudo chmod 600 .env
 sudo chmod +r .env
 
-if docker compose version >/dev/null 2>&1; then
-  COMPOSE="docker compose"
-elif command -v docker-compose >/dev/null 2>&1; then
-  COMPOSE="docker-compose"
-else
-  echo "No compose command found"
-  docker --version || true
-  exit 1
-fi
-
 echo "Deploying branch: $BRANCH" 
-echo "Using compose command: $COMPOSE"
-
-#$COMPOSE -f docker-compose.ec2.yml build api
-#$COMPOSE -f docker-compose.ec2.yml run --rm api python -m app.scripts.init_db
-#$COMPOSE -f docker-compose.ec2.yml up -d --remove-orphans api
 
 docker compose -f docker-compose.ec2.yml build api
 docker compose -f docker-compose.ec2.yml run --rm api python -m app.scripts.init_db
