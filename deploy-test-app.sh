@@ -31,7 +31,7 @@ for i in {1..30}; do
   fi
 
   echo "Attempt $i/30: API not up yet"
-  sleep 5
+  sleep 5 
 done
 
 echo "Failed health checks"
