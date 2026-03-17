@@ -12,6 +12,7 @@ if [ ! -f ".env" ]; then
 fi
 
 sudo chmod 600 .env
+sudo chmod +r .env
 
 echo "Deploying branch: $BRANCH" 
 
