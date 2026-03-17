@@ -6,8 +6,8 @@ BRANCH="${1:-main}"
 
 cd "$APP_DIR"
 
-if [! -f ".env"]; then
-  echo "Missing $app_dir/.env"
+if [ ! -f ".env" ]; then
+  echo "Missing $APP_DIR/.env"
   exit 1
 fi
 
