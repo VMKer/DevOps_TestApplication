@@ -27,16 +27,20 @@ fi
 echo "Deploying branch: $BRANCH" 
 echo "Using compose command: $COMPOSE"
 
-$COMPOSE -f docker-compose.ec2.yml build api
-$COMPOSE -f docker-compose.ec2.yml run --rm api python -m app.scripts.init_db
-$COMPOSE -f docker-compose.ec2.yml up -d --remove-orphans api
+#$COMPOSE -f docker-compose.ec2.yml build api
+#$COMPOSE -f docker-compose.ec2.yml run --rm api python -m app.scripts.init_db
+#$COMPOSE -f docker-compose.ec2.yml up -d --remove-orphans api
+
+docker compose -f docker-compose.ec2.yml build api
+docker compose -f docker-compose.ec2.yml run --rm api python -m app.scripts.init_db
+docker compose -f docker-compose.ec2.yml up -d --remove-orphans api
 
 echo "Waiting to check health..."
 for i in {1..30}; do
   if curl -fsS http://127.0.0.1/health >/dev/null && \
      curl -fsS http://127.0.0.1/health/db >/dev/null; then 
     echo "Passed health checks"
-    $COMPOSE -f docker-compose.ec2.yml ps
+    docker compose -f docker-compose.ec2.yml ps
     docker image prune -f
     exit 0
   fi
@@ -46,7 +50,7 @@ for i in {1..30}; do
 done
 
 echo "Failed health checks"
-$COMPOSE -f docker-compose.ec2.yml ps
-$COMPOSE -f docker-compose.ec2.yml logs --tail=200
+docker compose -f docker-compose.ec2.yml ps
+docker compose -f docker-compose.ec2.yml logs --tail=200
 exit 1
 
