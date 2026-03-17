@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-APP_DIR="/home/ec2-user/apps/test-app"
+APP_DIR="/home/ec2-user/test-app"
 BRANCH="${1:-main}"
 
 cd "$APP_DIR"
