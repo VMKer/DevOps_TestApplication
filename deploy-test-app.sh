@@ -13,7 +13,7 @@ fi
 
 sudo chmod 600 .env
 
-echo "Deploying branch: $BRANCH"
+echo "Deploying branch: $BRANCH" 
 
 docker compose -f docker-compose.ec2.yml build api #build API docker image
 docker compose -f docker-compose.ec2.yml run --rm api python  -m app.scripts.init_db #initialise/verify DB
