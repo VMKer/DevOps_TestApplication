@@ -2,9 +2,7 @@
 set -Eeuo pipefail
 
 APP_DIR="/home/ec2-user/apps/test-app"
-#REPO_URL="https://github.com/VMKer/DevOps_TestApplication"
 BRANCH="${1:-main}"
-#SHARED_ENV="/home/ec2-user/apps/test-app/shared/.env"
 
 cd "$APP_DIR"
 
