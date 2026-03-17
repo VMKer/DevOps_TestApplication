@@ -29,8 +29,10 @@ jobs:
           pip install pytest httpx
 
       - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: |
-          pytest
+          python -m pytest
 
   deploy:
     needs: test
